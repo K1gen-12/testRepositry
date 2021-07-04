@@ -50,10 +50,10 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     
 @handler.add(MessageEvent,message=TextMessage)
-def tell_bustime(event):
+def tell_bustime_iki(event):
     tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     date_now = datetime.datetime.now(tz)
-    URL ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
+    URL_iki ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     cnt_h=0
     cnt_m=0
     print(date_now)
@@ -61,7 +61,7 @@ def tell_bustime(event):
         if (event.message.text=="行き")or(event.message.text=="いき"):
                 print("start runnning for IKI")
             
-                res = requests.get(URL)
+                res = requests.get(URL_iki)
                 soup = BeautifulSoup(res.content,"html.parser")
                 soup = soup.find(class_='left wide-page-mode')
                 soup = soup.find(class_="time-list-frame")
@@ -117,12 +117,14 @@ def tell_bustime_kaeri(event):
     cnt_m=0
     tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     date_now = datetime.datetime.now(tz)
-    URL ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
+    print(datetime_now)
+    URL_kaeri ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     
     if event.type == "message":
         if (event.message.text=="帰り")or(event.message.text=="かえり"):
+            print("start running for KAERI")
         
-            response = requests.get(URL)
+            response = requests.get(URL_kaeri)
             soup =BeautifulSoup(response.content,"html.parser")
             soup = soup.find(class_="left wide-page-mode")
             soup = soup.find(class_="time-list-frame")
