@@ -77,6 +77,7 @@ def tell_bustime_iki(event):
                 if (i<date_now.hour):
                     cnt_h+=1
                 else:
+                    cnt_h=0
                     break
                 
             time = Hours[cnt_h].text
@@ -95,6 +96,7 @@ def tell_bustime_iki(event):
                 if(Min<date_now.minute):
                     cnt_m+=1
                 else:
+                    cnt_m=0
                     break
                 
             TIME_d = Mins[cnt_m].find(class_="time dep")
