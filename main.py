@@ -58,9 +58,7 @@ def tell_bustime(event):
     cnt_m=0
     print(date_now)
     if event.type == "message":
-        if (event.message.text=="バス")or(event.message.text=="バスの時間")or(event.message.text=="バスの時刻表")or(event.message.text=="ばす"):
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="大学に向かうなら「行き（いき）」、駅に向かうなら「帰り（かえり）」と入力してください"))
-            if (event.message.text=="行き")or(event.message.text=="いき"):
+        if (event.message.text=="行き")or(event.message.text=="いき"):
                 print("start runnning for IKI")
             
                 res = requests.get(URL)
