@@ -68,43 +68,48 @@ def tell_bustime_iki(event):
             soup = soup.find(class_="time-list-frame")
             Hours = soup.find_all("dt")
             
-            for i in Hours:
-                i = i.text
-                i = i.replace("時","")
-                i = int(i)
+            try:
+                for i in Hours:
+                    i = i.text
+                    i = i.replace("時","")
+                    i = int(i)
                 
-                if (i<date_now.hour):
-                    cnt_h+=1
-                    print(i)
-                else:
-                    break
+                    if (i<date_now.hour):
+                        cnt_h+=1
+                        print(i)
+                    else:
+                        break
                 
-            time = Hours[cnt_h].text
-            time = time.replace("時","")
+                time = Hours[cnt_h].text
+                time = time.replace("時","")
             
-            Mins = soup.find_all("dd")
-            Mins = Mins[cnt_h].find("ol")
-            Mins = Mins.find_all(class_="time-detail")
+                Mins = soup.find_all("dd")
+                Mins = Mins[cnt_h].find("ol")
+                Mins = Mins.find_all(class_="time-detail")
             
-            for j in Mins:
-                Min = j.find(class_="time dep")
-                Min = Min.text
-                Min = Min.replace(time+":","")
-                Min = int(Min)
+                for j in Mins:
+                    Min = j.find(class_="time dep")
+                    Min = Min.text
+                    Min = Min.replace(time+":","")
+                    Min = int(Min)
                 
-                if(Min<date_now.minute):
-                    cnt_m+=1
-                else:
-                    cnt_m=0
-                    break
+                    if(Min<date_now.minute):
+                        cnt_m+=1
+                    else:
+                        cnt_m=0
+                        break
                 
-            TIME_d = Mins[cnt_m].find(class_="time dep")
-            TIME_d = TIME_d.text
-            TIME_a = Mins[cnt_m].find(class_="time arr")
-            TIME_a = TIME_a.text
-            TEXT_BT = TIME_d+"=>"+TIME_a
+                TIME_d = Mins[cnt_m].find(class_="time dep")
+                TIME_d = TIME_d.text
+                TIME_a = Mins[cnt_m].find(class_="time arr")
+                TIME_a = TIME_a.text
+                TEXT_BT = TIME_d+"=>"+TIME_a
     
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(TEXT_BT))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(TEXT_BT))
+                
+            except IndexError:
+                print("Error:Out of time")
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("対象のバスが見つかりません"))
 
         
 if __name__ == '__main__':
