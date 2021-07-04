@@ -54,8 +54,10 @@ def tell_bustime(event):
     tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     date_now = datetime.datetime.now(tz)
     URL ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
+    URLk ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     cnt_h=0
     cnt_m=0
+    print(date_now)
     if event.type == "message":
         if (event.message.text=="バス")or(event.message.text=="バスの時間")or(event.message.text=="バスの時刻表")or(event.message.text=="ばす"):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text="大学に向かうなら「行き（いき）」、駅に向かうなら「帰り（かえり）」と入力してください"))
@@ -115,12 +117,7 @@ def tell_bustime(event):
                 
             elif (event.message.text=="帰り")or(event.message.text=="かえり"):
                 print("start running for KAERI")
-                cnt_h=0
-                cnt_m=0
-                tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
-                date_now = datetime.datetime.now(tz)
-                URLk ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
-        
+                
                 response = requests.get(URLk)
                 soup =BeautifulSoup(response.content,"html.parser")
                 soup = soup.find(class_="left wide-page-mode")
