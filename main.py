@@ -50,7 +50,7 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     
 @handler.add(MessageEvent,message=TextMessage)
-def tell_bustime_iki(event):
+def tell_bustime(event):
     tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     date_now = datetime.datetime.now(tz)
     URL ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
@@ -110,7 +110,62 @@ def tell_bustime_iki(event):
             except IndexError:
                 print("Error:Out of time")
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("対象のバスが見つかりません"))
-
+                
+        elif (event.message.text=="帰り")or(event.message.text=="かえり"):
+            cnt_h=0
+            cnt_m=0
+            tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
+            date_now = datetime.datetime.now(tz)
+            URLk ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
+        
+            response = requests.get(URLk)
+            soup =BeautifulSoup(response.content,"html.parser")
+            soup = soup.find(class_="left wide-page-mode")
+            soup = soup.find(class_="time-list-frame")
+            hours = soup.find_all("dt")
+        
+            try:
+                for i in hours:
+                    i = i.text
+                    i = i.replace("時","")
+                    i = int(i)
+                
+                    if (i<date_now.hour):
+                        cnt_h+=1
+                    else:
+                        cnt_h=0
+                        break
+        
+                time = hours[cnt_h].text
+                time = time.replace("時","")
+        
+                Mins = soup.find_all("dd")
+                Mins = Mins[cnt_h].find("ol")
+                Mins = Mins.find_all(class_="time-detail")
+                
+                for j in Mins:
+                    Min = j.find(class_="time dep")
+                    Min = Min.text
+                    Min = Min.replace(time+":","")
+                    Min = int(Min)
+        
+                    if(Min<date_now.minute):
+                        cnt_m+=1
+                    else:
+                        cnt_m=0
+                        break
+            
+                TIME_d = Mins[cnt_m].find(class_="time dep")
+                TIME_d = TIME_d.text
+                TIME_a = Mins[cnt_m].find(class_="time arr")
+                TIME_a = TIME_a.text
+                text = TIME_d+"=>"+TIME_a
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text))
+            
+            except IndexError:
+                print("out of time") 
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("対象のバスが見つかりません"))
+        
 @handler.add(MessageEvent,message=TextMessage)
 def tell_bustime_kaeri(event):
     cnt_h=0
