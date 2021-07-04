@@ -48,13 +48,18 @@ def reply_msg():
     return "OK."
 
 @handler.add(MessageEvent,message=TextMessage)
-def tell_bus_iki(event):
+def handle_message(event):
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
 
+@handler.add(MessageEvent,message=TextMessage)
+def tell_bustime_iki(event):
     if event.type == "message":
         if (event.message.text=="バス")or(event.message.text=="バスの時間")or(event.message.text=="バスの時刻表"):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text="現在片道のみ利用可能。「行き」と入力してください"))
             
         if (event.message.text=="いき")or(event.message.text=="行き"):
+
+            #URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
             URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date=2021-07-05"
             cnt_h =0
             cnt_m =0
@@ -77,11 +82,11 @@ def tell_bus_iki(event):
                 
             time = Hours[cnt_h].text
             time = time.replace("時","")
-                
+            
             Mins = soup.find_all("dd")
             Mins = Mins[cnt_h].find("ol")
             Mins = Mins.find_all(class_="time-detail")
-                
+            
             for j in Mins:
                 Min = j.find(class_="time dep")
                 Min = Min.text
@@ -97,10 +102,10 @@ def tell_bus_iki(event):
             TIME_d = TIME_d.text
             TIME_a = Mins[cnt_m].find(class_="time arr")
             TIME_a = TIME_a.text
-            time_bus_dep = TIME_d+"=>"+TIME_a
-            
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=time_bus_dep))
-                    
+            TEXT_BT = TIME_d+"=>"+TIME_a
+    
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(TEXT_BT))
+        
 if __name__ == '__main__':
     port = int(os.getenv('PORT'))
     app.run(host='0.0.0.0',port=port)
