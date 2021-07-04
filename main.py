@@ -28,8 +28,6 @@ CHANNEL_SECRET_TOKEN = os.environ['YOUR_CHANNEL_SECRET']
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET_TOKEN)
 date_now = datetime.datetime.now()
-#URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
-URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date=2021-07-05"
 
 @app.route("/")
 def hello_line():
@@ -55,7 +53,7 @@ def handle_message(event):
 def tell_bustime_iki(event):
     tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     date_now = datetime.datetime.now(tz)
-    URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date=2021-07-05"
+    URL ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     cnt_h=0
     cnt_m=0
     if event.type == "message":
