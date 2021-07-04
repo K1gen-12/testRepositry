@@ -54,14 +54,14 @@ def handle_message(event):
 @handler.add(MessageEvent,message=TextMessage)
 def tell_bustime_iki(event):
     date_now = datetime.datetime.now()
+    URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date=2021-07-05"
+    cnt_h=0
+    cnt_m=0
     if event.type == "message":
         if (event.message.text=="バス")or(event.message.text=="バスの時間")or(event.message.text=="バスの時刻表")or(event.message.text=="ばす"):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text="現在片道のみ利用可能。「行き(いき）」と入力してください"))
             
         if (event.message.text=="いき")or(event.message.text=="行き"):
-
-            cnt_h =0
-            cnt_m =0
             
             res = requests.get(URL)
             soup = BeautifulSoup(res.content,"html.parser")
@@ -76,6 +76,7 @@ def tell_bustime_iki(event):
                 
                 if (i<date_now.hour):
                     cnt_h+=1
+                    print(i)
                 else:
                     break
                 
