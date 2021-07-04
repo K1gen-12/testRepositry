@@ -53,7 +53,8 @@ def handle_message(event):
     
 @handler.add(MessageEvent,message=TextMessage)
 def tell_bustime_iki(event):
-    date_now = datetime.datetime.now()
+    tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
+    date_now = datetime.datetime.now(tz)
     URL = "https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date=2021-07-05"
     cnt_h=0
     cnt_m=0
