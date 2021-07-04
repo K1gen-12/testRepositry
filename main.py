@@ -35,7 +35,7 @@ date_now = datetime.datetime.now()
 def hello_line():
     return "Ok"
 
-@app.route("reply",methods=['POST'])
+@app.route("/reply",methods=['POST'])
 def reply_msg():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
