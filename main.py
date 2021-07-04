@@ -61,6 +61,7 @@ def tell_bustime(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text="大学に向かうなら「行き（いき）」、駅に向かうなら「帰り（かえり）」と入力してください"))
             
             if (event.message.text=="行き")or(event.message.text=="いき"):
+                print("start runnning for IKI")
             
                 res = requests.get(URL)
                 soup = BeautifulSoup(res.content,"html.parser")
@@ -113,6 +114,7 @@ def tell_bustime(event):
                     line_bot_api.reply_message(event.reply_token, TextSendMessage("対象のバスが見つかりません"))
                 
             elif (event.message.text=="帰り")or(event.message.text=="かえり"):
+                print("start running for KAERI")
                 cnt_h=0
                 cnt_m=0
                 tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
