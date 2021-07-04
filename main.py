@@ -46,9 +46,11 @@ def reply_msg():
     return "OK."
     
 @handler.add(MessageEvent,message=TextMessage)
-def tell_bustime_iki(event):
+def tell_bustime(event):
     tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     date_now = datetime.datetime.now(tz)
+    print(date_now)
+    URL_kaeri ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     URL_iki ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     cnt_h=0
     cnt_m=0
@@ -106,18 +108,7 @@ def tell_bustime_iki(event):
                 except IndexError:
                     print("Error:Out of time")
                     line_bot_api.reply_message(event.reply_token, TextSendMessage("行きのバスが見つかりません"))
-                
-@handler.add(MessageEvent,message=TextMessage)
-def tell_bustime_kaeri(event):
-    cnt_h=0
-    cnt_m=0
-    tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
-    date_now = datetime.datetime.now(tz)
-    print(date_now)
-    URL_kaeri ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
-    
-    if event.type == "message":
-        if (event.message.text=="帰り")or(event.message.text=="かえり"):
+        elif (event.message.text=="帰り")or(event.message.text=="かえり"):
             print("start running for KAERI")
         
             response = requests.get(URL_kaeri)
@@ -167,7 +158,7 @@ def tell_bustime_kaeri(event):
             except IndexError:
                 print("out of time") 
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("帰りのバスが見つかりません😱"))
-        
+         
 if __name__ == '__main__':
     port = int(os.getenv('PORT'))
     app.run(host='0.0.0.0',port=port)
