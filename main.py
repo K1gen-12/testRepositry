@@ -55,8 +55,8 @@ def handle_message(event):
 @handler.add(MessageEvent,message=TextMessage)
 def tell_bustime_iki(event):
     if event.type == "message":
-        if (event.message.text=="バス")or(event.message.text=="バスの時間")or(event.message.text=="バスの時刻表"):
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="現在片道のみ利用可能。「行き」と入力してください"))
+        if (event.message.text=="バス")or(event.message.text=="バスの時間")or(event.message.text=="バスの時刻表")or(event.message.text=="ばす"):
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="現在片道のみ利用可能。「行き(いき）」と入力してください"))
             
         if (event.message.text=="いき")or(event.message.text=="行き"):
 
@@ -77,7 +77,6 @@ def tell_bustime_iki(event):
                 if (i<date_now.hour):
                     cnt_h+=1
                 else:
-                    cnt_h=0
                     break
                 
             time = Hours[cnt_h].text
