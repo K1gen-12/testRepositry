@@ -73,13 +73,14 @@ def tell_bustime(event):
                 
                         if (i<date_now.hour):
                             cnt_h+=1
-                            print(i)
+                            #print(i)
                         else:
                             cnt_h=0
                             break
                 
                     time = Hours[cnt_h].text
                     time = time.replace("時","")
+                    print(time)
             
                     Mins = soup.find_all("dd")
                     Mins = Mins[cnt_h].find("ol")
@@ -90,6 +91,7 @@ def tell_bustime(event):
                         Min = Min.text
                         Min = Min.replace(time+":","")
                         Min = int(Min)
+                        print(Min)
                 
                         if(Min<date_now.minute):
                             cnt_m+=1
