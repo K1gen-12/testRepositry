@@ -47,8 +47,9 @@ def reply_msg():
     
 @handler.add(MessageEvent,message=TextMessage)
 def tell_bustime(event):
-    tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
-    date_now = datetime.datetime.now(tz)
+    #tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
+    #date_now = datetime.datetime.now(tz)
+    date_now = "2021-07-05 23:58:05.120736"
     print(date_now)
     URL_kaeri ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     URL_iki ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
@@ -128,7 +129,6 @@ def tell_bustime(event):
                     if (i<date_now.hour):
                         cnt_h+=1
                     else:
-                        cnt_h=0
                         break
         
                 time = hours[cnt_h].text
@@ -147,7 +147,6 @@ def tell_bustime(event):
                     if(Min<date_now.minute):
                         cnt_m+=1
                     else:
-                        cnt_m=0
                         break
             
                 TIME_d = Mins[cnt_m].find(class_="time dep")
