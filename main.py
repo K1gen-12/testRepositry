@@ -102,6 +102,8 @@ def tell_bustime(event):
                     TIME_a = Mins[cnt_m].find(class_="time arr")
                     TIME_a = TIME_a.text
                     TEXT_BT = TIME_d+"=>"+TIME_a
+
+                    print(TEXT_BT)
     
                     line_bot_api.reply_message(event.reply_token, TextSendMessage(TEXT_BT))
                 
@@ -153,6 +155,7 @@ def tell_bustime(event):
                 TIME_a = Mins[cnt_m].find(class_="time arr")
                 TIME_a = TIME_a.text
                 text = TIME_d+"=>"+TIME_a
+                print(text)
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text))
             
             except IndexError:
