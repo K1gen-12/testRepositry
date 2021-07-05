@@ -4,6 +4,7 @@ Created on Sat July 4 14:39:49 2021
 
 @author: 木村　元紀
 """
+#git push
 from bs4 import BeautifulSoup
 from flask import Flask,request,abort
 from linebot import (
