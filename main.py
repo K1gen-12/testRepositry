@@ -158,8 +158,54 @@ def tell_bustime(event):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text))
             
             except IndexError:
-                print("out of time") 
-                line_bot_api.reply_message(event.reply_token, TextSendMessage("帰りのバスが見つかりません😱"))
+                if (time<24):
+                    cnt_h=1
+                    print("start running for KAERI")
+                response = requests.get(URL_kaeri)
+                soup =BeautifulSoup(response.content,"html.parser")
+                soup = soup.find(class_="left wide-page-mode")
+                soup = soup.find(class_="time-list-frame")
+                hours = soup.find_all("dt")
+            
+                try:
+                    for i in hours:
+                        i = i.text
+                        i = i.replace("時","")
+                        i = int(i)
+                    
+                        if (i<date_now.hour):
+                            cnt_h+=1
+                        else:
+                            break
+        
+                    time = hours[cnt_h].text
+                    time = time.replace("時","")
+            
+                    Mins = soup.find_all("dd")
+                    Mins = Mins[cnt_h].find("ol")
+                    Mins = Mins.find_all(class_="time-detail")
+        
+                    for j in Mins:
+                        Min = j.find(class_="time dep")
+                        Min = Min.text
+                        Min = Min.replace(time+":","")
+                        Min = int(Min)
+            
+                        if(Min<date_now.minute):
+                            cnt_m+=1
+                        else:
+                            break
+            
+                    TIME_d = Mins[cnt_m].find(class_="time dep")
+                    TIME_d = TIME_d.text
+                    TIME_a = Mins[cnt_m].find(class_="time arr")
+                    TIME_a = TIME_a.text
+                    text = TIME_d+"=>"+TIME_a
+                    print(text)
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text))
+                except:
+                    print("out of time") 
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage("帰りのバスが見つかりません😱"))
          
 if __name__ == '__main__':
     port = int(os.getenv('PORT'))
