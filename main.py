@@ -49,7 +49,7 @@ def reply_msg():
 def tell_bustime(event):
     #tz = datetime.timezone(datetime.timedelta(hours=9),name='JAPAN')
     #date_now = datetime.datetime.now(tz)
-    date_now = "2021-07-05 23:58:05.120736"
+    date_now = "2021 07 05 23:58:05.120736"
     print(date_now)
     URL_kaeri ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031140&arrival=00031884&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
     URL_iki ="https://www.navitime.co.jp/bus/diagram/timelist?hour=3&departure=00031884&arrival=00031140&line=00009702&date={}-{}-{}".format(date_now.year,date_now.month,date_now.day)
