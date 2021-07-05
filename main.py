@@ -80,11 +80,12 @@ def tell_bustime(event):
                 
                     time = Hours[cnt_h].text
                     time = time.replace("時","")
-                    print(time)
+                    print(time,cnt_h)
             
                     Mins = soup.find_all("dd")
                     Mins = Mins[cnt_h].find("ol")
                     Mins = Mins.find_all(class_="time-detail")
+                    print(Mins.text)
             
                     for j in Mins:
                         Min = j.find(class_="time dep")
